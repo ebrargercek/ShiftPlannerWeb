@@ -1,0 +1,29 @@
+@model List<ShiftPlannerWeb.Models.Shift>
+
+@{
+    ViewData["Title"] = "Vardiya Listesi";
+}
+
+<h2>Vardiya Listesi</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Çalışan ID</th>
+            <th>Vardiya Başlangıç</th>
+            <th>Vardiya Bitiş</th>
+            <th>Atama Türü</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.EmployeeId</td>
+                <td>@item.ShiftStart.ToString("dd.MM.yyyy HH:mm")</td>
+                <td>@item.ShiftEnd.ToString("dd.MM.yyyy HH:mm")</td>
+                <td>@item.AssignLabel</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,114 @@
+@model Dictionary<string, int>
+@{
+    ViewData["Title"] = "İstatistikler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var total = Model.Values.Sum();
+    var percentageData = Model.ToDictionary(kvp => kvp.Key, kvp => Math.Round((double)kvp.Value / total * 100, 1));
+}
+
+<h2 class="text-center mt-4">📊 Vardiya Türlerine Göre Dağılım</h2>
+
+<div class="container">
+    <canvas id="shiftChart" width="600" height="400"></canvas>
+</div>
+
+<hr />
+
+<h3 class="text-center mt-5">📅 Günlük Vardiya Dağılımı</h3>
+<div class="container">
+    <canvas id="dailyChart" width="600" height="400"></canvas>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const shiftCtx = document.getElementById('shiftChart').getContext('2d');
+        const shiftLabels = @Html.Raw(Json.Serialize(Model.Keys));
+        const shiftValues = @Html.Raw(Json.Serialize(Model.Values));
+        const shiftPercentages = @Html.Raw(Json.Serialize(@percentageData.Select(p => p.Value + '%')));
+
+        new Chart(shiftCtx, {
+            type: 'bar',
+            data: {
+                labels: shiftLabels,
+                datasets: [{
+                    label: 'Vardiya Sayısı',
+                    data: shiftValues,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)'
+                    ],
+                    borderColor: 'rgba(0,0,0,0.1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const idx = context.dataIndex;
+                                return `${context.dataset.data[idx]} (${shiftPercentages[idx]})`;
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Shift AssignType Dağılımı'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Vardiya Sayısı' }
+                    },
+                    x: {
+                        title: { display: true, text: 'Atama Türü' }
+                    }
+                }
+            }
+        });
+
+        // Örnek: Günlük dağılım simülasyonu (gerçek veriye göre backend'de hazırlanmalı)
+        const dailyCtx = document.getElementById('dailyChart').getContext('2d');
+        const dailyLabels = ['01.05', '02.05', '03.05', '04.05', '05.05', '06.05', '07.05'];
+        const dailyData = [4, 6, 3, 5, 7, 4, 2];
+
+        new Chart(dailyCtx, {
+            type: 'line',
+            data: {
+                labels: dailyLabels,
+                datasets: [{
+                    label: 'Günlük Vardiya Sayısı',
+                    data: dailyData,
+                    fill: false,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Haftalık Günlük Vardiya Dağılımı'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Vardiya' }
+                    },
+                    x: {
+                        title: { display: true, text: 'Tarih' }
+                    }
+                }
+            }
+        });
+    </script>
+}

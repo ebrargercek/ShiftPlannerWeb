@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "Görev Atama";
+}
+
+<h2>🧭 Görev Atama Paneli</h2>
+
+<form method="post" asp-controller="Planner" asp-action="AssignTask">
+    <div class="form-group">
+        <label>Çalışan ID</label>
+        <input type="number" name="EmployeeId" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Görev Başlangıç</label>
+        <input type="datetime-local" name="ShiftStart" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Görev Bitiş</label>
+        <input type="datetime-local" name="ShiftEnd" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Görev Notu</label>
+        <input type="text" name="TaskNote" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-success mt-3">Görev Ata</button>
+</form>

@@ -1,0 +1,45 @@
+@model List<ShiftPlannerWeb.Models.Shift>
+
+@{
+    ViewData["Title"] = "Haftalık Vardiya Takvimi";
+
+    string GetBadgeClass(int type) => type switch
+    {
+        0 => "secondary", // Boş
+        1 => "primary",   // Vardiya
+        2 => "info",      // Görev
+        3 => "success",   // İzin
+        4 => "danger",    // Devamsızlık
+        _ => "dark"
+    };
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">🗓️ Haftalık Vardiya Takviminiz</h2>
+
+    <table class="table table-striped table-bordered shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Tarih</th>
+                <th>Başlangıç</th>
+                <th>Bitiş</th>
+                <th>Tür</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ShiftStart.ToString("dd.MM.yyyy")</td>
+                    <td>@item.ShiftStart.ToString("HH:mm")</td>
+                    <td>@item.ShiftEnd.ToString("HH:mm")</td>
+                    <td>
+                        <span class="badge bg-@GetBadgeClass(item.AssignType)">
+                            @item.AssignLabel
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

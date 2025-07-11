@@ -1,0 +1,13 @@
+@{
+    ViewData["Title"] = "Giriş Yap";
+}
+
+<h2>Giriş Yap</h2>
+
+<form asp-controller="Account" asp-action="Login" method="post">
+    <div class="form-group">
+        <label for="employeeId">Çalışan Numaranız (EmployeeId)</label>
+        <input type="number" class="form-control" name="employeeId" required />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Giriş</button>
+</form>

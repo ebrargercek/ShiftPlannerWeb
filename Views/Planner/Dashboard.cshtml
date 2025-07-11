@@ -1,0 +1,40 @@
+// Views/Planner/Dashboard.cshtml
+@{
+    ViewData["Title"] = "Kontrol Paneli";
+    var role = ViewBag.Role as string ?? "Çalışan";
+    var employeeId = ViewBag.EmployeeId ?? 0;
+}
+
+<div class="container mt-4">
+    <h2 class="text-center">Merhaba @(role == "Admin" ? "Yönetici" : "Çalışan") #@employeeId</h2>
+
+    <ul class="list-group mt-4">
+        <li class="list-group-item">
+            <a asp-controller="Planner" asp-action="MyShifts">🗓️ Benim Vardiyalarım</a>
+        </li>
+
+        <li class="list-group-item">
+            <a asp-controller="Planner" asp-action="Weekly">📆 Haftalık Takvim</a>
+        </li>
+
+        @if (role == "Admin")
+        {
+            <li class="list-group-item">
+                <a asp-controller="Planner" asp-action="Manage">🛠️ Vardiya Atama Paneli</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Planner" asp-action="Index">📋 Tüm Çalışan Vardiyaları</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Planner" asp-action="AssignTask">🧭 Görev Atama</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Planner" asp-action="AdminStats">📊 İstatistikler</a>
+            </li>
+        }
+
+        <li class="list-group-item">
+            <a asp-controller="Account" asp-action="Logout">🚪 Çıkış Yap</a>
+        </li>
+    </ul>
+</div>
